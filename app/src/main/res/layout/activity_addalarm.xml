@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkHeaderClr"
+    android:orientation="vertical"
+    tools:context=".Addalarm">
+
+    <TextView
+        android:id="@+id/addlarmpagetitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Your Alarm"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/addalarmbutt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addlarmpagetitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".6"
+                android:text="Name"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/alarmname"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:alpha=".8"
+                android:background="@android:color/transparent"
+
+                android:hint="your name"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:id="@+id/clock"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="5"
+                    android:alpha=".89"
+                    android:text="06:32"
+                    android:textSize="40sp"
+                    android:textStyle="bold"></TextView>
+
+                <ImageButton
+                    android:id="@+id/timepicker"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_baseline_add_24red"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </LinearLayout>
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/dayslist"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bottomguide"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alarm Ringtone"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/seekBarTone"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:min="10"
+                android:max="100"
+                android:progressDrawable="@drawable/progress"
+                android:thumb="@drawable/thumb"></SeekBar>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/addalarmbutt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/gradiantcolor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guidelinesocendquradd"
+        app:layout_constraintStart_toStartOf="@id/guidelinefirstquradd"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.973"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+    <ProgressBar
+        android:id="@+id/loadingaddalarm"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:indeterminateTint="?attr/cardBackgroundColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/guidelinesocendquradd"
+        app:layout_constraintStart_toStartOf="@id/guidelinefirstquradd"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0.973" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinefirstquradd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.42" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinesocendquradd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.58" />
+</androidx.constraintlayout.widget.ConstraintLayout>
