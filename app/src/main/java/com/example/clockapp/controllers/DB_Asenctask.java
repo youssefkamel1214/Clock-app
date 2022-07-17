@@ -1,5 +1,13 @@
 package com.example.clockapp.controllers;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.widget.Toast;
 
 import com.example.clockapp.Addalarm;
 import com.example.clockapp.MainActivity;
@@ -42,10 +50,14 @@ public class DB_Asenctask extends AsyncTask<ArrayList<Alarm>>{
             }
         else {
              db.maindao().delete(alarm);
+             cancelAlarm(alarm,mainActivityWeakReference.get());
+        }
+        if(task==1||task==2)
+        {
+            setAlarm(alarm, mainActivityWeakReference.get());
         }
         return  alarms;
     }
-
     @Override
     protected void onPostExecute(ArrayList<Alarm> alarms) {
                       if (task==0) {
@@ -57,4 +69,26 @@ public class DB_Asenctask extends AsyncTask<ArrayList<Alarm>>{
                           addalarm.doneloading();
                       }
     }
+    private void setAlarm(Alarm alarm,Context context){
+        AlarmManager alarmManager=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent=new Intent(context, AlarmReciver.class);
+        intent.putExtra("id",alarm.getId());
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,alarm.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,alarm.getTime().getTimeInMillis(),pendingIntent);
+
+    }
+    private void cancelAlarm(Alarm alarm,Context context) {
+        Intent intent=new Intent(context, AlarmReciver.class);
+        intent.putExtra("id",alarm.getId());
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(context
+                ,alarm.getId(),intent,PendingIntent.FLAG_NO_CREATE);
+        try {
+
+        AlarmManager alarmManager=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        }catch (Exception exception){
+            Toast.makeText(context,exception.getMessage(), Toast.LENGTH_LONG);
+        }
+    }
+
 }

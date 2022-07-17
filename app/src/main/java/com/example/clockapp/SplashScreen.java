@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -54,19 +56,12 @@ Runnable runnable=new Runnable() {
         objectAnimator.start();
         handler.removeCallbacks(runnable);
         handler.postDelayed(runnable,delay);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent i=new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(i);
-                       finish();
-                    }
-                });
-            }
-        }, delay*(cahrsquence.length()+5));
+        handler.postDelayed(() -> runOnUiThread(() -> {
+            Intent i=new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(i);
+           finish();
+        }), delay*(cahrsquence.length()+5));
     }
+
 
 }

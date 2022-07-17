@@ -57,15 +57,8 @@ public class Alarm implements Serializable {
     }
 
     public void setTime(Calendar time) {
-        if(repeat==null) {
             this.time = time;
-            return;
-        }
-       if(this.time==null)
-           this.time=Calendar.getInstance();
-       this.time.set(Calendar.HOUR, time.get(Calendar.HOUR));
-       this.time.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-
+            this.time.set(Calendar.SECOND, 0);
     }
 
     public String getRepeat() {

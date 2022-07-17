@@ -42,6 +42,8 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
         this.txTextView = txTextView;
         if(alarms.isEmpty())
             txTextView.setVisibility(View.VISIBLE);
+        else
+            txTextView.setVisibility(View.GONE);
     }
 
     public static class  Viewholder extends RecyclerView.ViewHolder{

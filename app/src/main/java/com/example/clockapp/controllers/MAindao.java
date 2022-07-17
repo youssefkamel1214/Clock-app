@@ -23,4 +23,6 @@ public interface MAindao {
     void update(int sid, Calendar stime,boolean sactive, String srepeat);
     @Query("Select * from Alarms_table ORDER BY time Desc")
     List<Alarm> get_all_alarms();
+    @Query("Select * from Alarms_table where id =:sid")
+       Alarm get_Alarm(int sid);
 }
