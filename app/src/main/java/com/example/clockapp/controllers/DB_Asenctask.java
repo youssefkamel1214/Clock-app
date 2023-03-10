@@ -13,6 +13,7 @@ import com.example.clockapp.Addalarm;
 import com.example.clockapp.MainActivity;
 import com.example.clockapp.modules.Alarm;
 
+import org.chromium.base.Log;
 import org.chromium.base.task.AsyncTask;
 
 import java.lang.ref.WeakReference;
@@ -65,29 +66,42 @@ public class DB_Asenctask extends AsyncTask<ArrayList<Alarm>>{
                           main.inailzedb_getalarms(alarms);
                       }
                       else if(task==2){
-                          Addalarm addalarm=(Addalarm)  mainActivityWeakReference.get();
-                          addalarm.doneloading();
+                          if(mainActivityWeakReference.get() instanceof Addalarm) {
+                              Addalarm addalarm = (Addalarm) mainActivityWeakReference.get();
+                              addalarm.doneloading();
+                          }
                       }
     }
     private void setAlarm(Alarm alarm,Context context){
         AlarmManager alarmManager=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent=new Intent(context, AlarmReciver.class);
         intent.putExtra("id",alarm.getId());
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,alarm.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,alarm.getTime().getTimeInMillis(),pendingIntent);
-
+        PendingIntent pendingIntent= null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(context,alarm.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_MUTABLE);
+        }
+        else {
+            pendingIntent= PendingIntent.getBroadcast(context,alarm.getId(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(alarm.getTime().getTimeInMillis(),pendingIntent),pendingIntent);
     }
     private void cancelAlarm(Alarm alarm,Context context) {
         Intent intent=new Intent(context, AlarmReciver.class);
         intent.putExtra("id",alarm.getId());
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context
-                ,alarm.getId(),intent,PendingIntent.FLAG_NO_CREATE);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(context,alarm.getId(),intent,PendingIntent.FLAG_NO_CREATE|PendingIntent.FLAG_IMMUTABLE);
+        }
+        else {
+            pendingIntent = PendingIntent.getBroadcast(context,alarm.getId(),intent,PendingIntent.FLAG_NO_CREATE);
+        }
         try {
-
-        AlarmManager alarmManager=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
+            if(pendingIntent!=null){
+                AlarmManager alarmManager=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
+            }
         }catch (Exception exception){
-            Toast.makeText(context,exception.getMessage(), Toast.LENGTH_LONG);
+            Log.e("error",exception.getMessage(),null);
         }
     }
 

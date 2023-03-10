@@ -1,11 +1,15 @@
 package com.example.clockapp;
 
+import static android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.room.RoomDatabase;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -50,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                Intent intent=new Intent(this,Addalarm.class);
             startActivityForResult(intent,1);
         });
-
     }
 
     private void checkpopup() {
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             DB_Asenctask db_asenctask = new DB_Asenctask(this, null, 0);
             db_asenctask.executeWithTaskTraits(TaskTraits.BEST_EFFORT);
             binding.empty.setVisibility(View.GONE);
+
         } else if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
             if (!Settings.canDrawOverlays(this)) {
                 Toast.makeText(this, "sorry application must have this premmision",Toast.LENGTH_LONG);

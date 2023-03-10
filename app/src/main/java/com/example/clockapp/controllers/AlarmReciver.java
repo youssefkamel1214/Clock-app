@@ -19,9 +19,9 @@ public class AlarmReciver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-       // Log.d("fromBroadcast","---------------------------------");
-        //Log.d("fromBroadcast","aaa---------------------------------");
-        //Log.d("fromBroadcast","---------------------------------ssssfaawff");
+        Log.d("fromBroadcast","---------------------------------");
+        Log.d("fromBroadcast","aaa---------------------------------");
+        Log.d("fromBroadcast","---------------------------------ssssfaawff");
         int id=intent.getIntExtra("id",-1);
         RoomDB roomDB=RoomDB.getInstance(context);
         Alarm alarm =roomDB.maindao().get_Alarm(id);

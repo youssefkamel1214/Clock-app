@@ -3,9 +3,29 @@
 
     <item
         android:id="@android:id/background"
-        android:drawable="@drawable/background_fill"/>
-    <item android:id="@android:id/progress">
-        <clip android:drawable="@drawable/progress_fill" />
+       android:height="3dp"
+        android:gravity="center">
+        <shape>
+            <gradient
+                android:centerColor="#FF555555"
+                android:endColor="#FF555555"
+                android:startColor="#FF555555" />
+
+
+        </shape>
+    </item>
+    <item android:id="@android:id/progress"
+        android:height="1dp"
+        android:gravity="center">
+        <clip  >
+            <shape>
+            <gradient
+                android:angle="90"
+                android:endColor="#F78961"
+                android:startColor="#F5333E" />
+
+            </shape>
+        </clip>
     </item>
 
 </layer-list>

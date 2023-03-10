@@ -2,8 +2,6 @@ package com.example.clockapp.controllers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.clockapp.MainActivity;
 import com.example.clockapp.R;
 import com.example.clockapp.databinding.AlarmrecleitemBinding;
 import com.example.clockapp.modules.Alarm;
@@ -25,12 +21,9 @@ import org.chromium.base.task.TaskTraits;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
-import it.sephiroth.android.library.widget.AdapterView;
 
 public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder> {
     ArrayList<Alarm>Alarms;
@@ -47,7 +40,6 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
     }
 
     public static class  Viewholder extends RecyclerView.ViewHolder{
-
        AlarmrecleitemBinding binding;
         public Viewholder( AlarmrecleitemBinding binding) {
             super(binding.getRoot());
@@ -69,7 +61,7 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
         binding.alarmname.setText(alarm.getTitle());
         DateFormat dateFormat=new SimpleDateFormat("hh:mm a , dd EEE");
         binding.digtalclock.setText(dateFormat.format(alarm.getTime().getTime()));
-        handlereapet(binding,alarm);
+        handlereapet(binding,alarm,position);
         handleactivity(binding,alarm,position);
         binding.delete.setOnClickListener(view -> {
             DB_Asenctask db_asenctask=new DB_Asenctask((Activity) binding.alarmname.getContext(),alarm,3);
@@ -77,13 +69,13 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
             Alarms.remove(position);
             if(Alarms.isEmpty())
                 txTextView.setVisibility(View.VISIBLE);
-            notifyDataSetChanged();
+            notifyItemRemoved(position);
         });
 
     }
 
-    private void handlereapet(AlarmrecleitemBinding binding, Alarm alarm) {
-        ArrayAdapter adapter=new ArrayAdapter<String>(binding.bellimage.getContext(),
+    private void handlereapet(AlarmrecleitemBinding binding, Alarm alarm,int postion) {
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(binding.bellimage.getContext(),
                 android.R.layout.simple_list_item_1,days){
             @NonNull
             @Override
@@ -110,9 +102,9 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
                 a='0';
             String repeat=alarm.getRepeat();
             alarm.setRepeat(repeat.substring(0, position1)+a+repeat.substring(position1 +1));
-            Alarms.sort((Comparator<Alarm>) (alarm12, t1) -> Alarm.compare(alarm12, t1));
+            Alarms.sort((Comparator<Alarm>) Alarm::compare);
             update_alarm(alarm,binding.alarmname.getContext());
-            notifyDataSetChanged();
+            notifyItemChanged(postion);
         });
     }
 
@@ -128,7 +120,7 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
             binding.bellimage.setImageResource(R.drawable.bell);
         }
         binding.bellimage.setOnClickListener(view -> {
-            alarm.setActive(alarm.isActive()^true);
+            alarm.setActive(!alarm.isActive());
             Alarms.set(position,alarm);
             if (!alarm.isActive())
             {
@@ -140,9 +132,9 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.Viewholder
                 binding.AlarmreclerCard.setAlpha(1);
                 binding.bellimage.setImageResource(R.drawable.bell);
             }
-            Alarms.sort((alarm1, t1) -> Alarm.compare(alarm1, t1));
+            Alarms.sort(Alarm::compare);
             update_alarm(alarm,binding.alarmname.getContext());
-            notifyDataSetChanged();
+            notifyItemChanged(position);
         });
     }
 

@@ -31,17 +31,17 @@ public class Alarmwarn extends AppCompatActivity {
     float volume;
     SimpleDateFormat HM=new SimpleDateFormat("HH: mm a");
     private void onfinish() {
-        instance=null;
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
         }
         mediaPlayer.release();
         ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
-        List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+        List<ActivityManager.AppTask> taskList = mngr.getAppTasks();
        if(taskList.size()==1)
               finishAndRemoveTask();
        else
            finish();
+       instance=null;
     }
 
     @Override
@@ -64,7 +64,8 @@ public class Alarmwarn extends AppCompatActivity {
         });
         Handler handler=new Handler();
         handler.postDelayed(() -> runOnUiThread(() -> {
-            onfinish();
+            if(instance!=null)
+                 onfinish();
         }), 60*1000);
     }
 

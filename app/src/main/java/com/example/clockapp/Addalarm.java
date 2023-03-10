@@ -5,15 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.example.clockapp.controllers.DB_Asenctask;
 import com.example.clockapp.controllers.RoomDB;
@@ -25,13 +22,11 @@ import org.chromium.base.task.TaskTraits;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import it.sephiroth.android.library.widget.AdapterView;
-
 public class Addalarm extends AppCompatActivity {
 
     ActivityAddalarmBinding binding;
     Calendar time=Calendar.getInstance();
-    SimpleDateFormat HM=new SimpleDateFormat("HH: mm a");
+    SimpleDateFormat HM=new SimpleDateFormat("hh: mm a");
     StringBuilder repeat=new StringBuilder("0000000");
     String[] days=new String[]{"Su","Mo","Tu","We","Th","Fr","Sa"};
     RoomDB db;
@@ -41,6 +36,8 @@ public class Addalarm extends AppCompatActivity {
         binding=ActivityAddalarmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         time.add(Calendar.MINUTE, 15);
+        time.set(Calendar.SECOND, 0);
+        time.set(Calendar.MILLISECOND, 0);
         binding.clock.setText(HM.format(time.getTime()));
         db=RoomDB.getInstance(this);
         inialize_dayslist();
@@ -51,7 +48,7 @@ public class Addalarm extends AppCompatActivity {
     }
 
     private void inialize_dayslist() {
-        ArrayAdapter adapter=new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,days){
             @NonNull
             @Override
@@ -119,7 +116,7 @@ public class Addalarm extends AppCompatActivity {
                 time.set(Calendar.HOUR, hour);
                 time.set(Calendar.MINUTE, minute);
                 if(Calendar.getInstance().after(time))
-                    time.add(Calendar.DAY_OF_WEEK, 1);
+                    time.add(Calendar.DATE, 1);
                 binding.clock.setText(HM.format(time.getTime()));
         }, time.get(Calendar.HOUR),time.get(Calendar.MINUTE) , false);
         timePickerDialog.setTitle("Pick up time ");
